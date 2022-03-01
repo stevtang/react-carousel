@@ -8,7 +8,8 @@ it("renders Carousel without crashing", function(){
 });
 
 it("matches snapshot", function() {
-  const {container} = render(<Carousel photos={TEST_IMAGES} title="Shells from far-away beaches"/>);
+  const {container} = render(
+  <Carousel photos={TEST_IMAGES} title="images for testing"/>);
   expect(container).toMatchSnapshot();
 });
 
@@ -40,4 +41,16 @@ it("works when you click on the right arrow", function() {
   expect(
     container.querySelector('img[alt="testing image 2"]')
   ).toBeInTheDocument();
+
+  //move backward in the carousel
+  const leftArrow = container.querySelector(".fa-chevron-circle-left");
+  fireEvent.click(leftArrow);
+
+  // expect the first image to show, not the third
+  expect(
+    container.querySelector('img[alt="testing image 1"]')
+  ).toBeInTheDocument();
+  expect(
+    container.querySelector('img[alt="testing image 3"]')
+  ).not.toBeInTheDocument();
 });
