@@ -3,24 +3,43 @@ import Carousel from "./Carousel";
 import TEST_IMAGES from "./_testCommon.js";
 
 
-it("renders Carousel without crashing", function(){
-  render(<Carousel photos={TEST_IMAGES} title="Shells from far-away beaches"/>);
+
+it("renders Carousel without crashing", function () {
+  render(
+    <Carousel photos={TEST_IMAGES} title="Shells from far-away beaches" />
+  );
 });
 
-it("matches snapshot", function() {
-  const {container} = render(
-  <Carousel photos={TEST_IMAGES} title="images for testing"/>);
+it("matches snapshot", function () {
+  const { container } = render(
+    <Carousel photos={TEST_IMAGES} title="images for testing" />
+  );
   expect(container).toMatchSnapshot();
 });
 
-
-
-it("works when you click on the right arrow", function() {
+it("works: no left arrow on first image or right arrow on last image", function () {
   const { container } = render(
-    <Carousel
-      photos={TEST_IMAGES}
-      title="images for testing"
-    />
+    <Carousel photos={TEST_IMAGES} title="images for testing" />
+  );
+  
+  // expect no left arrow on first image
+  expect(
+    container.querySelector(".fa-chevron-circle-left")
+  ).not.toBeInTheDocument();
+
+  const rightArrow = container.querySelector(".fa-chevron-circle-right");
+  fireEvent.click(rightArrow);
+  fireEvent.click(rightArrow);
+
+  // expect no right arrow on last image
+  expect(
+    container.querySelector(".fa-chevron-circle-right")
+  ).not.toBeInTheDocument();
+});
+
+it("works when you click on the right arrow", function () {
+  const { container } = render(
+    <Carousel photos={TEST_IMAGES} title="images for testing" />
   );
   // expect the first image to show, but not the second
   expect(
